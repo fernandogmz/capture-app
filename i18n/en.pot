@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-05-19T13:44:33.550Z\n"
-"PO-Revision-Date: 2026-05-19T13:44:33.550Z\n"
+"POT-Creation-Date: 2026-05-22T14:07:07.066Z\n"
+"PO-Revision-Date: 2026-05-22T14:07:07.066Z\n"
 
 msgid "The application could not be loaded."
 msgstr "The application could not be loaded."
@@ -976,6 +976,9 @@ msgstr ""
 "Leaving this page will discard any selections you made for a new "
 "relationship"
 
+msgid "No one is assigned to this event"
+msgstr "No one is assigned to this event"
+
 msgid "Errors"
 msgstr "Errors"
 
@@ -1287,9 +1290,6 @@ msgstr "Assigned to"
 
 msgid "Edit"
 msgstr "Edit"
-
-msgid "No one is assigned to this event"
-msgstr "No one is assigned to this event"
 
 msgid "Assign"
 msgstr "Assign"

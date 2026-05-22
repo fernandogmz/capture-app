@@ -5,8 +5,8 @@ import { ErrorsSection } from './ErrorsSection/ErrorsSection.container';
 import { WarningsSection } from './WarningsSection/WarningsSection.container';
 import { WidgetFeedback } from '../../../WidgetFeedback';
 import { WidgetIndicator } from '../../../WidgetIndicator';
-import { RelationshipsSection } from './RelationshipsSection/RelationshipsSection.container';
-import { NotesSection } from './NotesSection/NotesSection.container';
+import { RelationshipsSection } from './RelationshipsSection';
+import { NotesSection } from './NotesSection';
 import { AssigneeSection } from './AssigneeSection';
 
 const getStyles = (theme: any) => ({

@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import i18n from '@dhis2/d2-i18n';
-import { IconUser24, spacers } from '@dhis2/ui';
+import { IconUser24, colors, spacers, spacersNum } from '@dhis2/ui';
 import { WithStyles, withStyles } from 'capture-core-utils/styles';
 import type { PlainProps } from './WidgetAssignee.types';
 import { Widget } from '../Widget';
@@ -14,6 +14,11 @@ const styles = () => ({
     },
     wrapper: {
         padding: `0 ${spacers.dp16} ${spacers.dp16} ${spacers.dp16}`,
+    },
+    emptyMessage: {
+        fontSize: 14,
+        color: colors.grey600,
+        paddingBottom: spacersNum.dp8,
     },
 });
 
@@ -47,12 +52,19 @@ const WidgetAssigneePlain = ({ assignee, readOnly, onSet, avatarId, classes }: P
                     {editMode ? (
                         <EditMode onCancel={() => setEditMode(false)} onSet={handleSet} assignee={assignee} />
                     ) : (
-                        <DisplayMode
-                            assignee={assignee}
-                            onEdit={() => setEditMode(true)}
-                            readOnly={readOnly}
-                            avatarId={avatarId}
-                        />
+                        <>
+                            {!assignee && (
+                                <div className={classes.emptyMessage} data-test="widget-assignee-empty-message">
+                                    {i18n.t('No one is assigned to this event')}
+                                </div>
+                            )}
+                            <DisplayMode
+                                assignee={assignee}
+                                onEdit={() => setEditMode(true)}
+                                readOnly={readOnly}
+                                avatarId={avatarId}
+                            />
+                        </>
                     )}
                 </div>
             </Widget>

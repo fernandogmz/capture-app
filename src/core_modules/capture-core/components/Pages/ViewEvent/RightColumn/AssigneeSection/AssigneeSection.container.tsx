@@ -1,32 +1,48 @@
-import React from 'react';
-import type { ApiEnrollmentEvent } from 'capture-core-utils/types/api-types';
-import { WidgetAssignee } from '../../../../WidgetAssignee';
-import type { ProgramStage } from '../../../../../metaData';
-import type { UserFormField } from '../../../../FormFields/UserField';
+import React, { useState } from 'react';
+import { AssigneeSectionComponent } from './AssigneeSection.component';
+import { useUserAvatar, useAssigneeMutation } from '../../../../WidgetAssignee/hooks';
+import type { Assignee } from '../../../../WidgetAssignee/WidgetAssignee.types';
+import type { Props } from './AssigneeSection.types';
 
-type Props = {
-    assignee: UserFormField | null;
-    programStage?: ProgramStage | null;
-    readOnly: boolean;
-    getAssignedUserSaveContext: () => { event: ApiEnrollmentEvent };
-    onSaveAssignee: (newAssignee: UserFormField) => void;
-    onSaveAssigneeError: (prevAssignee: UserFormField | null) => void;
-};
+type WithHooksProps = Omit<Props, 'programStage'>;
 
-export const AssigneeSection = ({
+const AssigneeSectionWithHooks = ({
     assignee,
-    programStage,
-    getAssignedUserSaveContext,
     readOnly,
+    getAssignedUserSaveContext,
     onSaveAssignee,
     onSaveAssigneeError,
-}: Props) => (
-    <WidgetAssignee
-        enabled={programStage?.enableUserAssignment || false}
-        assignee={assignee}
-        getSaveContext={getAssignedUserSaveContext}
-        readOnly={readOnly}
-        onSave={onSaveAssignee}
-        onSaveError={onSaveAssigneeError}
-    />
-);
+}: WithHooksProps) => {
+    const [editMode, setEditMode] = useState(false);
+    const { avatarId, isLoading } = useUserAvatar(assignee?.id);
+    const onSetMutation = useAssigneeMutation({
+        assignee,
+        getSaveContext: getAssignedUserSaveContext,
+        onSave: onSaveAssignee,
+        onSaveError: onSaveAssigneeError,
+    });
+
+    if (isLoading) return null;
+
+    const handleSet = (user: Assignee | null) => {
+        setEditMode(false);
+        onSetMutation(user as Assignee);
+    };
+
+    return (
+        <AssigneeSectionComponent
+            assignee={assignee}
+            readOnly={readOnly}
+            editMode={editMode}
+            avatarId={avatarId}
+            onEdit={() => setEditMode(true)}
+            onCancelEdit={() => setEditMode(false)}
+            onSet={handleSet}
+        />
+    );
+};
+
+export const AssigneeSection = ({ programStage, ...passOnProps }: Props) => {
+    if (!programStage?.enableUserAssignment) return null;
+    return <AssigneeSectionWithHooks {...passOnProps} />;
+};
