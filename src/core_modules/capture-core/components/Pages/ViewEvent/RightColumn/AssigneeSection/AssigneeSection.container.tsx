@@ -26,7 +26,7 @@ const AssigneeSectionWithHooks = ({
 
     const handleSet = (user: Assignee | null) => {
         setEditMode(false);
-        onSetMutation(user as Assignee);
+        if (user) onSetMutation(user);
     };
 
     return (
