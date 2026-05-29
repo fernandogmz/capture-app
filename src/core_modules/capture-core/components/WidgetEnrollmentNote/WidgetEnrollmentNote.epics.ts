@@ -6,17 +6,13 @@ import uuid from 'd2-utilizr/lib/uuid';
 import moment from 'moment';
 import type { ReduxStore, ApiUtils, EpicAction } from 'capture-core-utils/types/global';
 import { CurrentUser } from '../../utils/userInfo/CurrentUser';
-import { actionTypes, batchActionTypes, startAddNoteForEnrollment, addEnrollmentNote, removeEnrollmentNote }
+import { actionTypes, batchActionTypes, startAddNoteForEnrollment, addEnrollmentNote }
     from './WidgetEnrollmentNote.actions';
 import type { ClientNote, SaveContext } from './WidgetEnrollmentNote.types';
 
 type AddNoteActionPayload = {
     enrollmentId: string;
     note: string;
-};
-
-type RemoveNoteActionMeta = {
-    context: SaveContext;
 };
 
 const createServerData = (note: string, useNewEndpoint: boolean): Record<string, unknown> => {
@@ -62,14 +58,4 @@ export const addNoteForEnrollmentEpic = (
                 startAddNoteForEnrollment(enrollmentId, serverData, state.currentSelections, saveContext),
                 addEnrollmentNote(enrollmentId, clientNote),
             ], batchActionTypes.ADD_NOTE_BATCH_FOR_ENROLLMENT);
-        }));
-
-export const removeNoteForEnrollmentEpic = (action$: EpicAction<any, RemoveNoteActionMeta>) =>
-    action$.pipe(
-        ofType(actionTypes.ADD_NOTE_FAILED_FOR_ENROLLMENT),
-        map((action: { meta: { context: SaveContext } }) => {
-            const { enrollmentId, noteClientId } = action.meta.context;
-            return batchActions([
-                removeEnrollmentNote(enrollmentId, noteClientId),
-            ], batchActionTypes.REMOVE_NOTE_BATCH_FOR_ENROLLMENT);
         }));
